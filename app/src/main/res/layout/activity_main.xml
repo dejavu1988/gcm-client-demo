@@ -19,6 +19,7 @@
         <TextView
             android:id="@+id/regid"
             android:text="@string/regid_text"
+            android:textIsSelectable="true"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
