@@ -18,6 +18,7 @@
         android:name="com.example.sean.gcm_client_demo.permission.C2D_MESSAGE"
         android:protectionLevel="signature" />
     <uses-permission android:name="com.example.sean.gcm_client_demo.permission.C2D_MESSAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:icon="@drawable/ic_launcher"

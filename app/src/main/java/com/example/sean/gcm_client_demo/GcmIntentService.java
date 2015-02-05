@@ -29,7 +29,8 @@ public class GcmIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Bundle extras = intent.getExtras();
+        Log.d(TAG, "IntentService onHandleIntent");
+        final Bundle extras = intent.getExtras();
         GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
         // The getMessageType() intent parameter must be the intent you received
         // in your BroadcastReceiver.
@@ -47,9 +48,16 @@ public class GcmIntentService extends IntentService {
                 sendNotification("Deleted messages on server: " + extras.toString());
                 // If it's a regular GCM message, do some work.
             } else if (GoogleCloudMessaging.MESSAGE_TYPE_MESSAGE.equals(messageType)) {
+                Log.d(TAG, "Message type");
                 // Post notification of received message.
                 sendNotification("Received: " + extras.toString());
-                Log.i(TAG, "Received: " + extras.toString());
+                Log.d(TAG, "Received: " + extras.toString());
+                MainActivity.mHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        MainActivity.msgView.setText(extras.toString());
+                    }
+                });
             }
         }
         // Release the wake lock provided by the WakefulBroadcastReceiver.
@@ -68,12 +76,16 @@ public class GcmIntentService extends IntentService {
 
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.ic_launcher)
                         .setContentTitle("GCM Test Notification")
                         .setStyle(new NotificationCompat.BigTextStyle().bigText(msg))
-                        .setContentText(msg);
+                        .setContentText(msg)
+                        .setAutoCancel(true)
+                        .setVibrate(new long[]{10, 500});
 
         mBuilder.setContentIntent(contentIntent);
         mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+        Log.d(TAG, "Notification sent");
     }
 
 }

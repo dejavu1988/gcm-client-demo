@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,23 +31,26 @@ public class MainActivity extends ActionBarActivity {
      * Substitute you own sender ID here. This is the project number you got
      * from the API Console, as described in "Getting Started."
      */
-    String SENDER_ID = "722046371535";
+    String SENDER_ID = "717757229359";
 
     /**
      * Tag used on log messages.
      */
-    static final String TAG = "GCM Demo";
+    public static final String TAG = "GCM Demo";
 
-    TextView regidView;
+    public static TextView regidView, msgView;
     GoogleCloudMessaging gcm;
     Context context;
     String regid;
+    public static Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         regidView = (TextView) findViewById(R.id.regid);
+        msgView = (TextView) findViewById(R.id.msg);
+        msgView.setText("");
         context = getApplicationContext();
 
         // Check device for Play Services APK. If check succeeds, proceed with GCM registration.
@@ -62,6 +66,8 @@ public class MainActivity extends ActionBarActivity {
         } else {
             Log.i(TAG, "No valid Google Play Services APK found.");
         }
+
+        mHandler = new Handler();
     }
 
 
